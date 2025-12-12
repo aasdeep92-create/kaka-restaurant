@@ -2,8 +2,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Review</title>
+    <title>Reviews</title>
     <link rel="stylesheet" href="style.css">
+
+    <style>
+        .review-box {
+            background: #fff4e6;
+            padding: 15px;
+            margin-top: 15px;
+            border-left: 4px solid brown;
+            border-radius: 5px;
+        }
+
+        select, input, textarea {
+            width: 250px;
+            padding: 8px;
+            margin: 5px 0;
+        }
+
+        button {
+            background: brown;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: darkred;
+        }
+    </style>
 </head>
 
 <body>
@@ -20,11 +48,92 @@
 </nav>
 
 <div class="container">
+    <h2>Write a Review</h2>
+
+    <!-- Review Form -->
+    <input type="text" id="name" placeholder="Your Name"><br>
+    <textarea id="review" placeholder="Write your review..."></textarea><br>
+
+    <label>Star Rating:</label><br>
+    <select id="stars">
+        <option value="1">⭐</option>
+        <option value="2">⭐⭐</option>
+        <option value="3">⭐⭐⭐</option>
+        <option value="4">⭐⭐⭐⭐</option>
+        <option value="5">⭐⭐⭐⭐⭐</option>
+    </select><br>
+
+    <button onclick="submitReview()">Submit Review</button>
+
+    <p id="msg" style="color: green; font-weight:bold;"></p>
+
     <h2>What Customers Say</h2>
-    <p><b>Amit:</b> Amazing food! ⭐⭐⭐⭐⭐</p>
-    <p><b>Sneha:</b> Great service and ambiance ⭐⭐⭐⭐☆</p>
-    <p><b>Ravi:</b> Very tasty dishes ⭐⭐⭐⭐⭐</p>
+
+    <div id="reviewsList"></div>
+
 </div>
+
+<script>
+    // Load existing reviews on page load
+    window.onload = function () {
+        showReviews();
+    };
+
+    function submitReview() {
+        let name = document.getElementById("name").value;
+        let text = document.getElementById("review").value;
+        let stars = document.getElementById("stars").value;
+
+        if (name.trim() === "" || text.trim() === "") {
+            alert("Please fill all fields!");
+            return;
+        }
+
+        // Create review object
+        let reviewData = {
+            name: name,
+            text: text,
+            stars: stars
+        };
+
+        // Get existing reviews
+        let allReviews = JSON.parse(localStorage.getItem("reviews") || "[]");
+
+        // Add new review
+        allReviews.push(reviewData);
+
+        // Save back to storage
+        localStorage.setItem("reviews", JSON.stringify(allReviews));
+
+        // Show message
+        document.getElementById("msg").innerHTML = "Thanks for your review!";
+
+        // Clear inputs
+        document.getElementById("name").value = "";
+        document.getElementById("review").value = "";
+
+        // Reload displayed reviews
+        showReviews();
+    }
+
+    function showReviews() {
+        let container = document.getElementById("reviewsList");
+        container.innerHTML = "";
+
+        let allReviews = JSON.parse(localStorage.getItem("reviews") || "[]");
+
+        allReviews.forEach(function (rev) {
+            let stars = "⭐".repeat(rev.stars);
+
+            container.innerHTML += `
+                <div class="review-box">
+                    <p><b>${rev.name}:</b> ${rev.text}</p>
+                    <p>${stars}</p>
+                </div>
+            `;
+        });
+    }
+</script>
 
 </body>
 </html>
