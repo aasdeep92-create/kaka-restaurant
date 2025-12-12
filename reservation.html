@@ -15,26 +15,33 @@
     <a href="index.html">Home</a>
     <a href="menu.html">Menu</a>
     <a href="reservation.html">Reservation</a>
-    <a href="reviews.html">Reviews</a>
+    <a href="review.html">Reviews</a>
 </nav>
 
 <div class="container">
     <h2>Online Reservation Form</h2>
 
-    <form>
+    <form action="thankyou.html" method="get">
+
         <label>Your Name:</label><br>
-        <input type="text"><br>
+        <input type="text" name="name" required placeholder="Enter your name"><br>
+
+        <label>Contact Number:</label><br>
+        <input type="tel" name="phone" required pattern="[0-9]{10}"
+               placeholder="Enter 10-digit number"
+               title="Please enter a valid 10-digit phone number"><br>
 
         <label>No. of People:</label><br>
-        <input type="number"><br>
+        <input type="number" name="people" required min="1"
+               placeholder="Enter number of people"><br>
 
         <label>Date:</label><br>
-        <input type="date"><br>
+        <input type="date" name="date" required><br>
 
         <label>Time:</label><br>
-        <input type="time"><br>
+        <input type="time" name="time" required><br><br>
 
-        <button>Book Table</button>
+        <button type="submit">Book Table</button>
     </form>
 </div>
 
